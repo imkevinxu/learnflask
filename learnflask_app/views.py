@@ -90,6 +90,7 @@ def deploy(request):
 
 def deployed(request):
     step = 5
+    server = os.environ.get('AWS')
     if request.method == "POST":
         code = request.POST['code']
         request.session['code'] = code
