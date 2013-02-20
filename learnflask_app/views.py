@@ -16,9 +16,17 @@ from learnflask_app.models import *
 from learnflask_app.model_forms import *
 from learnflask_app.forms import *
 
-import os
+import os, time
 import spur
+import pexpect
 
+# -----------------------------------------
+#   GLOBAL VARIABLES
+# -----------------------------------------
+
+server = os.environ.get('AWS')
+user = os.environ.get('AWS_USERNAME')
+pem = os.environ.get('AWS_PEM')
 startcode = """from flask import Flask
 app = Flask(__name__)
 
@@ -27,6 +35,26 @@ app = Flask(__name__)
 
 if __name__ == "__main__":
     app.run()"""
+
+# -----------------------------------------
+#   Super janky command to add the ec2 server to the known_hosts file
+#   that is associated with the django project. For some reason the normal
+#   ~/.ssh/known_hosts on the heroku server allows one to ssh ONLY from a
+#   python REPL + spur BUT if you try python manage.py shell + spur it can't
+#   find the same known_hosts file. da fuq
+# -----------------------------------------
+
+def add_known_hosts(host, user, pem):
+    child = pexpect.spawn('ssh -i %s %s@%s' % (pem, user, host))
+    time.sleep(1)
+    child.sendline('yes')
+    child.sendline('exit')
+
+add_known_hosts(server, user, pem)
+
+# -----------------------------------------
+#   MAIN APP FUNCTIONS
+# -----------------------------------------
 
 def index(request):
     step = 1
@@ -62,14 +90,11 @@ def deploy(request):
 
 def deployed(request):
     step = 5
-    server = os.environ.get('AWS')
     if request.method == "POST":
         code = request.POST['code']
         request.session['code'] = code
-        username = os.environ.get('AWS_USERNAME')
-        pem = os.environ.get('AWS_PEM')
 
-        shell = spur.SshShell(hostname=server, username=username, private_key_file=pem)
+        shell = spur.SshShell(hostname=server, username=user, private_key_file=pem)
         shell.run(["sh", "-c", "echo '%s' > /var/www/flask/hello.py" % code])
         shell.run(["sh", "-c", "sudo /etc/init.d/apache2 restart"])
     else:
