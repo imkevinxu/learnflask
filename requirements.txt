@@ -2,6 +2,13 @@ Coffin==0.3.7
 Django==1.4
 Jinja2==2.6
 South==0.7.5
+dj-database-url==0.2.1
 django-debug-toolbar==0.9.4
+gunicorn==0.17.2
+paramiko==1.9.0
+pexpect==2.4
+psycopg2==2.4.6
 py-bcrypt==0.2
+pycrypto==2.6
+spur==0.3.2
 wsgiref==0.1.2

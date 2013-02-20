@@ -11,6 +11,11 @@ def smartlogin(request, **kwargs):
 
 urlpatterns = patterns('learnflask_app.views',
     url(r'^$', 'index', name='index'),
+    url(r'^route$', 'route', name='route'),
+    url(r'^hello$', 'hello', name='hello'),
+    url(r'^deploy$', 'deploy', name='deploy'),
+    url(r'^deployed$', 'deployed', name='deployed'),
+
     url(r'^login/$', smartlogin, kwargs=dict(template_name='login.html'), name='login'),
     url(r'^logout/$', logout, kwargs=dict(next_page='/'), name='logout'),
 

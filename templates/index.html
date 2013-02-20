@@ -7,29 +7,96 @@
 {% block content %}
 
 <div id="main" class="row">
-    <div class="twelve columns">
-        <h2>Thanks for using Django Project Builder!</h2>
-        <blockquote>
-            <h5 style="margin-top: 0">You are using a custom fork by <a href="https://github.com/imkevinxu" target="_blank">imkevinxu</a></h5>
+    <div class="four columns">
 
-            {% set template = "<a href=\"http://jinja.pocoo.org/docs/\" target=\"_blank\">Jinja2</a>" %}
-            <li style="margin-left:35px"><h5>{{ template|safe }} templating engine enabled with <a href="https://github.com/coffin/coffin" target="_blank">Coffin</a></h5></li>
+        {% if step == 1 %}
+            <h4>Let's learn Flask</h4>
+            <p>Flask is a micro-web-framework for Python.</p>
+            <p>It's awesome and super easy to learn.</p>
+            <p>To the right is some boilerplate. The first two lines import Flask and create an instance inside <code>app</code>.</p>
+            <p>The last two lines run the app if executed directly from the Python interpreter (which it will be).</p>
 
-            <li style="margin-left:35px"><h5><a href="https://github.com/django-debug-toolbar/django-debug-toolbar" target="_blank">Django Debug Toolbar</a> enabled</h5></li>
+            <form action="{% url route %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="code" name="code" value="{{code}}">
+                <input type="submit" class="success button" value="Next &rarr;">
+            </form>
+        {% elif step == 2%}
+            <h4>Add a route</h4>
+            <p>Routes are basically urls.</p>
+            <p>They look like <code>@app.route("/")</code> or <code>@app.route("/kitties")</code>.</p>
+            <p>Anything after <code>/</code> is the actual URL so just <code>/</code> is the root URL.</p>
+            <p><strong>Now add <code>@app.route("/")</code> underneath the comment.</strong></p>
 
-            <li style="margin-left:35px"><h5><a href="https://docs.djangoproject.com/en/dev/topics/auth/#using-bcrypt-with-django" target="_blank">bcrypt</a> password hashing enabled</h5></li>
+            <form action="{% url hello %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="code" name="code" value="{{code}}">
+                <input type="submit" class="success button" value="Next &rarr;">
+            </form>
+        {% elif step == 3%}
+            <h4>Hello world</h4>
+            <p>Now we define the function that will run when we hit this route.</p>
+            <p>The function just has to return a string like this hello function:</p>
+            <pre><code>def hello():
+    return "Hello World!"</code></pre>
+            <br>
+            <p><strong>Now add a function that returns a string <em>directly</em> under the defined route.</strong></p>
 
-            <li style="margin-left:35px"><h5><a href="https://www.djangoproject.com/" target="_blank">Django</a> 1.4 with <a href="http://south.readthedocs.org/en/0.7.6/index.html" target="_blank">South</a> database migration</h5></li>
+            <form action="{% url deploy %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="code" name="code" value="{{code}}">
+                <input type="submit" class="success button" value="Next &rarr;">
+            </form>
 
-            <p>It's highly experimental and constantly being updated with random best practices so check out the fork on <a href="https://github.com/imkevinxu/django-projectbuilder" target="_blank">Github</a> or email Kevin at <a href="mailto:kevin@imkevinxu.com?Subject=Awesome Django Project Builder Fork!" target="_blank">kevin@imkevinxu.com</a> and let him know what you think!</p>
-        </blockquote>
+        {% elif step == 4%}
+            <h4>Deploying</h4>
+            <p>Awesome, everything checks out.</p>
+            <p>Now lets deploy this bad boy. We've already prepared an Amazon EC2 server ready for your code. We've taken care of most of the behind the scenes stuff which we will teach you in later lessons but for now all you have to do is press the magical button :)</p>
 
-        <br/>
-        <h5>Original DPB built by the kickass people at <a href="http://builtbyptm.com/blog/announcing-django-project-builder-v01/" target="_blank">PTM</a></h5>
-        <p>Feel free to contribute improvements to the original project on <a href="https://github.com/prototypemagic/django-projectbuilder" target="_blank">the GitHub page</a></p>
+            <form action="{% url deployed %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="code" name="code" value="{{code}}">
+                <input type="submit" class="success button" value="Deploy!">
+            </form>
+
+        {% elif step == 5%}
+            <h4>It works!</h4>
+            <p>Try it out again, edit any code and deploy again.</p>
+            <p><strong>Try putting returning some HTML instead of a plain string.</strong></p>
+
+            <form action="{% url deployed %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="code" name="code" value="{{code}}">
+                <input type="submit" class="success button" value="Deploy!">
+            </form>
+
+            <p>Website deployed at <a href="http://{{server}}/" target="_blank">http://{{server}}/</a></p>
+            <div id="browser">
+                <iframe src="http://{{server}}/" frameborder="0"></iframe>
+            </div>
+        {% endif %}
+
+    </div>
+    <div class="eight columns">
+
+        <div id="editor">{{code}}</div>
+
     </div>
 </div>
 
 {% endblock %}
 
-{% block javascript %}{% endblock %}
+{% block javascript %}
+
+<script src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/github");
+    editor.getSession().setMode("ace/mode/python");
+
+    editor.getSession().on('change', function(e) {
+        $('input#code').val(editor.getSession().getValue());
+    });
+</script>
+
+{% endblock %}

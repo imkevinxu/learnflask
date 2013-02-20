@@ -1,4 +1,4 @@
-Learnflask
+Learn Flask
 ================
 
 Auto-generated from [Kevin Xu](https://github.com/imkevinxu)'s [Django Project Builder](https://github.com/imkevinxu/django-projectbuilder)
@@ -35,6 +35,10 @@ For best results, make sure you have at least:
     python manage.py migrate learnflask_app                           # migrates any south migrations
 
 ## Troubleshooting
+
+### Local Environment Variables
+
+App uses a local .env not stored in the git repo to get some environment variables. Email Kevin Xu <kevin@imkevinxu.com> to get it
 
 ### Workflow
 
