@@ -45,6 +45,7 @@ App uses a local .env not stored in the git repo to get some environment variabl
 In case something's not working after pulling, try one of these:
 
     workon learnflask                                                 # makes sure you're in the right virtual environment
+    source .env                                                       # makes sure your local environment variables are setup
     pip install -r requirements.txt                                   # makes sure python packages are up to date
     python manage.py migrate learnflask_app                           # makes sure database schema is migrated
 
