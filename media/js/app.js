@@ -1,7 +1,11 @@
 ;(function ($, window, undefined) {
 
   /* Javascript masterminded by Kevin Xu <kevin@imkevinxu.com> */
-
+  $('input[type=submit]').on('click', function() {
+    if ($(this).val() == "Deploy!") {
+      $(this).parent().next().css('display', 'block');
+    }
+  });
 
 
 

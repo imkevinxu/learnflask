@@ -58,6 +58,7 @@
                 <input type="hidden" id="code" name="code" value="{{code}}">
                 <input type="submit" class="success button" value="Deploy!">
             </form>
+            <img src="{{ MEDIA_URL }}/images/loader.gif" style="display: none;" alt="">
 
         {% elif step == 5%}
             <h4>It works!</h4>
@@ -69,6 +70,7 @@
                 <input type="hidden" id="code" name="code" value="{{code}}">
                 <input type="submit" class="success button" value="Deploy!">
             </form>
+            <img src="{{ MEDIA_URL }}/images/loader.gif" style="display: none;" alt="">
 
             <p>Website deployed at <a href="http://{{server}}/" target="_blank">http://{{server}}/</a></p>
             <div id="browser">
