@@ -62,7 +62,7 @@
         {% elif step == 5%}
             <h4>It works!</h4>
             <p>Try it out again, edit any code and deploy again.</p>
-            <p><strong>Try putting returning some HTML instead of a plain string.</strong></p>
+            <p><strong>Try putting returning some HTML like <code>&lt;h1&gt;This is cool&lt;/h1&gt;</code> inside the quotes intead of a plain string.</strong></p>
 
             <form action="{% url deployed %}" method="POST">
                 {% csrf_token %}
